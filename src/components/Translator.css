@@ -1,0 +1,288 @@
+:root {
+  --primary: #4e54c8;
+  --secondary: #8f94fb;
+  --light: #f8f8f8;
+  --dark: #222;
+  --bg-light: #f4f7ff;
+  --bg-dark: #1e1e2f;
+
+
+  --xsmall: 0.25rem;
+  --small: 0.5rem;
+  --medium: 1rem;
+  --large: 1.5rem;
+}
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  transition: 0.3s;
+}
+
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: var(--bg-light);
+  color: var(--dark);
+  line-height: 1.5;
+}
+
+.dark-mode {
+  background: var(--bg-dark);
+  color: var(--light);
+}
+
+
+.icon {
+  inline-size: 1.1em;
+  block-size: 1.1em;
+  margin-inline-end: 0.3em;
+}
+
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--small);
+  padding: var(--medium) var(--large);
+  background: linear-gradient(90deg, var(--primary), var(--secondary));
+  color: #fff;
+  box-shadow: 0 4px 6px rgb(0 0 0 / 0.2);
+}
+
+.dark-mode .navbar {
+  background: linear-gradient(90deg, #232526, #414345);
+}
+
+.navbar h1 {
+  font-size: clamp(1.3rem, 4vw, 2rem);
+  display: flex;
+  align-items: center;
+}
+
+.navbar button {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  color: inherit;
+  cursor: pointer;
+}
+
+
+.wrapper {
+  inline-size: min(94%, 70rem);
+  margin-inline: auto;
+  padding: clamp(var(--large), 4vw, var(--large));
+  display: flex;
+  flex-direction: column;
+  gap: var(--large);
+}
+
+
+.textarea-wrapper {
+  position: relative;
+}
+
+textarea {
+  inline-size: 100%;
+  block-size: clamp(10rem, 22vh, 14rem);
+  padding: var(--medium);
+  font-size: 1rem;
+  resize: none;
+  border: 1px solid #ccc;
+  border-radius: 0.75rem;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.08);
+}
+
+.dark-mode textarea {
+  background: #2c2c3a;
+  color: #fff;
+  border-color: #444;
+}
+
+.textarea-wrapper textarea {
+  padding-inline-end: 4rem;
+}
+
+.action-buttons {
+  position: absolute;
+  inset-block-start: var(--small);
+  inset-inline-end: var(--small);
+  display: flex;
+  flex-direction: column;
+  gap: var(--small);
+}
+
+.action-buttons button {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: inherit;
+  cursor: pointer;
+  padding: var(--xsmall);
+}
+
+.action-buttons button:hover {
+  transform: scale(1.25);
+}
+
+
+button,
+.file-label,
+select {
+  font-size: 1rem;
+  padding: 0.6rem 1.1rem;
+  border: none;
+  border-radius: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  cursor: pointer;
+}
+
+button,
+.file-label {
+  background: var(--primary);
+  color: #fff;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 0.1);
+}
+
+button:hover,
+.file-label:hover {
+  background: var(--secondary);
+  transform: translateY(-1px);
+}
+
+.dark-mode button,
+.dark-mode .file-label {
+  background: #3a3f51;
+}
+
+.dark-mode button:hover {
+  background: #556;
+}
+
+select {
+  background: #f8f9ff;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+select:hover {
+  border-color: var(--primary);
+}
+
+.dark-mode select {
+  background: #2c2c3a;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+
+.btn-group {
+  display: grid;
+  gap: var(--small);
+  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+}
+
+.file-input {
+  display: none;
+}
+
+._clear-btn {
+  width: auto;
+  max-width: 100%;
+  padding: 0.6rem 1.1rem;
+  margin-inline: auto;
+}
+
+
+
+.section {
+  display: grid;
+  gap: var(--small);
+}
+
+.section__header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--small);
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--small);
+}
+
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgb(0 0 0 / 0.5);
+  display: grid;
+  place-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background: #fff;
+  color: #000;
+  inline-size: min(90%, 22rem);
+  padding: var(--large);
+  border-radius: 0.75rem;
+  position: relative;
+}
+
+.dark-mode .modal-content {
+  background: #1e1e1e;
+  color: #fff;
+}
+
+.close {
+  position: absolute;
+  top: 0.6rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.share-btn {
+  width: 100%;
+  margin-top: var(--small);
+}
+
+.share-btn.whatsapp {
+  background: #25d366 !important;
+}
+
+.share-btn.whatsapp:hover {
+  background: #1da851 !important;
+}
+
+
+@media (max-width: 45rem) {
+
+  .navbar h1 {
+    font-size: 17px;
+  }
+
+  .action-buttons {
+    flex-direction: row;
+    inset-block-end: var(--small);
+    inset-block-start: auto;
+  }
+
+  .textarea-wrapper textarea {
+    padding-inline-end: calc(4rem + 1vw);
+  }
+
+
+  .btn-group button,
+  .btn-group .file-label {
+    justify-content: center;
+  }
+
+}
