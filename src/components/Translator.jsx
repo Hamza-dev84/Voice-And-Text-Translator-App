@@ -1,9 +1,9 @@
+
 import React, { useState, useEffect, useRef } from "react";
 import html2canvas from "html2canvas";
 import "./Translator.css";
 
-
-import { MdLightMode, MdDarkMode } from "react-icons/md"mja;
+import { MdLightMode, MdDarkMode } from "react-icons/md";
 import {
     FaCopy,
     FaVolumeUp,
@@ -19,7 +19,6 @@ import {
 } from "react-icons/fa";
 
 const VoiceTextTranslator = () => {
-
     const [dark, setDark] = useState(false);
     const [input, setInput] = useState("");
     const [output, setOutput] = useState("");
@@ -27,13 +26,12 @@ const VoiceTextTranslator = () => {
     const [targetLang, setTargetLang] = useState("en");
     const [openModal, setOpenModal] = useState(false);
     const [voices, setVoices] = useState([]);
-  
 
-          /  //   const recogRef = useRef(null);
-
+    const recogRef = useRef(null);
 
     useEffect(() => {
-        if ("webkitSpeechRecognition" in window) {B..........BVN  
+        // Speech Recognition Setup
+        if ("webkitSpeechRecognition" in window) {
             recogRef.current = new window.webkitSpeechRecognition();
         } else if ("SpeechRecognition" in window) {
             recogRef.current = new window.SpeechRecognition();
@@ -42,14 +40,18 @@ const VoiceTextTranslator = () => {
         if (recogRef.current) {
             recogRef.current.continuous = false;
             recogRef.current.interimResults = false;
-            recogRef.current.onresult = (e) =>
+
+            recogRef.current.onresult = (e) => {
                 setInput((prev) => prev + e.results[0][0].transcript + " ");
-            recogRef.current.onerror = (e) =>
+            };
+
+            recogRef.current.onerror = (e) => {
                 alert("Voice recognition error: " + e.error);
+            };
         }
 
-
-        const loadVoices = () => '"""""""""""""""""""""""""""""""""""""'''''''''''''''''''''\h         nnnnnnnnnnnn{
+        // Load Voices
+        const loadVoices = () => {
             const synthVoices = speechSynthesis.getVoices();
             if (synthVoices.length) {
                 setVoices(synthVoices);
@@ -57,7 +59,6 @@ const VoiceTextTranslator = () => {
         };
 
         loadVoices();
-
         speechSynthesis.onvoiceschanged = loadVoices;
     }, []);
 
@@ -67,16 +68,13 @@ const VoiceTextTranslator = () => {
         recogRef.current.start();
     };
 
-
-    const copyText = txt => {
+    const copyText = (txt) => {
         navigator.clipboard.writeText(txt);
         alert("Text copied to clipboard!");
     };
 
     const speak = (txt, lang) => {
-        if (!txt.trim()) {
-            return alert("No text to speak!");
-        }
+        if (!txt.trim()) return alert("No text to speak!");
 
         const voice = voices.find((v) => v.lang.startsWith(lang)) || null;
 
@@ -86,21 +84,19 @@ const VoiceTextTranslator = () => {
         speechSynthesis.speak(utter);
     };
 
-
     const clearAll = () => {
         setInput("");
         setOutput("");
         alert("All text cleared!");
     };
 
-
-
-
     const translate = async () => {
         if (!input.trim()) return alert("Enter text first!");
+
         const url =
             "https://translate.googleapis.com/translate_a/single?client=gtx" +
             `&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(input)}`;
+
         try {
             const res = await fetch(url);
             const data = await res.json();
@@ -110,33 +106,36 @@ const VoiceTextTranslator = () => {
         }
     };
 
-
     const downloadTxt = () => {
         if (!input && !output) return;
+
         const blob = new Blob([`Input:\n${input}\n\nOutput:\n${output}`], {
             type: "text/plain",
         });
-        const a = Object.assign(document.createElement("a"), {
-            href: URL.createObjectURL(blob),
-            download: "translation.txt",
-        });
+
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "translation.txt";
         a.click();
         URL.revokeObjectURL(a.href);
     };
 
     const downloadImg = async () => {
         if (!input && !output) return;
+
         const div = document.createElement("div");
         div.style.cssText =
             "padding:20px;font-family:Arial;width:100%;max-width:500px";
         div.innerHTML = `<h3>Input</h3><p>${input || "—"}</p>
-                     <h3>Output</h3><p>${output || "—"}</p>`;
+                         <h3>Output</h3><p>${output || "—"}</p>`;
         document.body.appendChild(div);
+
         const canvas = await html2canvas(div);
         const link = document.createElement("a");
         link.download = "translation.png";
         link.href = canvas.toDataURL("image/png");
         link.click();
+
         document.body.removeChild(div);
     };
 
@@ -156,7 +155,6 @@ const VoiceTextTranslator = () => {
         const txt = `Input:\n${input || "—"}\n\nOutput:\n${output || "—"}`;
         window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`, "_blank");
     };
-
 
     const langs = [
         { code: "en", label: "English" },
@@ -191,30 +189,25 @@ const VoiceTextTranslator = () => {
         { code: "th", label: "Thai" },
     ];
 
-
     return (
         <div className={dark ? "dark-mode" : ""}>
-
             <header className="navbar">
-                <h1>
-
-                    Voice & Text Translator App
-                </h1>
+                <h1>Voice & Text Translator App</h1>
                 <button onClick={() => setDark(!dark)}>
                     {dark ? <MdLightMode /> : <MdDarkMode />}
                 </button>
             </header>
 
             <main className="wrapper">
-
+                {/* INPUT SECTION */}
                 <section className="section">
                     <div className="section__header">
                         <h2>Input</h2>
                         <div className="controls">
                             <button onClick={startVoice}>
-                                <FaMicrophoneAlt className="icon" />
-                                input voice
+                                <FaMicrophoneAlt className="icon" /> input voice
                             </button>
+
                             <select
                                 value={voiceLang}
                                 onChange={(e) => setVoiceLang(e.target.value)}
@@ -234,23 +227,23 @@ const VoiceTextTranslator = () => {
                             onChange={(e) => setInput(e.target.value)}
                             placeholder="Type or speak here…"
                         />
+
                         <div className="action-buttons">
                             <button onClick={() => speak(input, voiceLang)}>
                                 <FaVolumeUp />
                             </button>
-                            <button onClick={() => copyText(input, "input")}>
+
+                            <button onClick={() => copyText(input)}>
                                 <FaCopy />
                             </button>
-
                         </div>
                     </div>
                 </section>
 
-
+                {/* BUTTON GROUP */}
                 <div className="btn-group">
                     <label className="file-label">
-                        <FaFileUpload className="icon" />
-                        Upload .txt file
+                        <FaFileUpload className="icon" /> Upload .txt file
                         <input
                             type="file"
                             accept=".txt"
@@ -260,30 +253,27 @@ const VoiceTextTranslator = () => {
                     </label>
 
                     <button onClick={downloadTxt}>
-                        <FaDownload className="icon" />
-                        Download .txt file
+                        <FaDownload className="icon" /> Download .txt
                     </button>
 
                     <button onClick={downloadImg}>
-                        <FaImage className="icon" />
-                        Download image
+                        <FaImage className="icon" /> Download image
                     </button>
 
                     <button onClick={() => setOpenModal(true)}>
-                        <FaShareSquare className="icon" />
-                        Share
+                        <FaShareSquare className="icon" /> Share
                     </button>
                 </div>
 
-
+                {/* OUTPUT SECTION */}
                 <section className="section">
                     <div className="section__header">
                         <h2>Output</h2>
                         <div className="controls">
                             <button onClick={translate}>
-                                <FaGlobe className="icon" />
-                                Translate
+                                <FaGlobe className="icon" /> Translate
                             </button>
+
                             <select
                                 value={targetLang}
                                 onChange={(e) => setTargetLang(e.target.value)}
@@ -299,25 +289,25 @@ const VoiceTextTranslator = () => {
 
                     <div className="textarea-wrapper">
                         <textarea readOnly value={output} placeholder="Translation…" />
+
                         <div className="action-buttons">
                             <button onClick={() => speak(output, targetLang)}>
                                 <FaVolumeUp />
                             </button>
-                            <button onClick={() => copyText(output, "output")}>
+
+                            <button onClick={() => copyText(output)}>
                                 <FaCopy />
                             </button>
-
                         </div>
                     </div>
                 </section>
 
                 <button className="_clear-btn" onClick={clearAll}>
-                    <FaBroom className="icon" />
-                    Clear
+                    <FaBroom className="icon" /> Clear
                 </button>
             </main>
 
-
+            {/* Share model */}
             {openModal && (
                 <div className="modal" onClick={() => setOpenModal(false)}>
                     <div
@@ -328,12 +318,11 @@ const VoiceTextTranslator = () => {
                             <FaTimes />
                         </span>
                         <h3>
-                            <FaShareSquare className="icon" />
-                            Share
+                            <FaShareSquare className="icon" /> Share
                         </h3>
+
                         <button className="share-btn whatsapp" onClick={share}>
-                            <FaWhatsapp className="icon" />
-                            WhatsApp
+                            <FaWhatsapp className="icon" /> WhatsApp
                         </button>
                     </div>
                 </div>
